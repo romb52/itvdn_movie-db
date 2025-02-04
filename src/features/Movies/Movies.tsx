@@ -3,21 +3,37 @@ import { connect } from "react-redux";
 import { RootState } from "../../store";
 import { MovieCard } from "./MovieCard";
 
-import styles from  "./Movies.module.scss";
+import styles from "./Movies.module.scss";
+import { useEffect, useState } from "react";
+import { client, MovieDetails } from "../../api/tmdb";
 
-function getNowPlaying(){
-    const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYzI1MWQ0ZGE5MTA0NzU3OTBiYmYzY2FlZTdjZmMwNSIsIm5iZiI6MTczNzcxNDI1OS4zMTgsInN1YiI6IjY3OTM2YTUzMjVkMjk4MGZiMDIzOTIyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NOFpUjXaI59thC0dW8QKbgNm-l3gezxntV2UjZzdWAk'
+
+
+
+export function MoviesFetch() {
+    const [movies, setMovies] = useState<MovieDetails[]>([]);
+
+    useEffect(() => {
+        async function loadData() {
+            const config = await client.getConfiguration();
+            const imageUrl = config.images.base_url;
+            const results = await client.getNowPlaying();
+
+            const mappedResults: Movie[] = results.map((m) => ({
+                id: m.id,
+                title: m.title,
+                overview: m.overview,
+                popularity: m.popularity,
+                image: m.backdrop_path ? `${imageUrl}w780${m.backdrop_path}` : undefined
+            }))
+
+            setMovies(mappedResults);
         }
-      };
-      
-      fetch('https://api.themoviedb.org/3/movie/now_playing?page=1', options)
-        .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
+
+        loadData()
+    }, [])
+
+    return <Movies movies={movies} />
 }
 
 
@@ -34,7 +50,9 @@ function Movies({ movies }: MoviesProps) {
                         id={m.id}
                         title={m.title}
                         overview={m.overview}
-                        popularity={m.popularity} />
+                        popularity={m.popularity}
+                        image={m.image}
+                    />
                 ))}
             </div>
         </section>
