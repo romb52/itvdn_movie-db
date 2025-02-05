@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./Moviecard.module.scss"
+import { Card, CardContent, CardMedia } from "@mui/material";
+
 
 interface MovieCardProps {
     id: number;
@@ -11,15 +13,13 @@ interface MovieCardProps {
 
 export function MovieCard({ id, title, overview, popularity, image = "/movie-thumb.png" }: MovieCardProps) {
     return (
-        <div className={styles.card}>
-            <img className={styles.thumnail}
-                src={image}
-                alt="Movie thumnail" />
-            <div className={styles.content}>
+        <Card>
+            <CardMedia component="div" image={image} sx={{pt:"56.25%"}}/>            
+            <CardContent>
                 <Link to={`/movies/${id}`}>{title}</Link>
                 <div className={styles.overview}>{overview}</div>
-                <div className={styles.popularity}>{popularity}</div>
-            </div>
-        </div>
+                <div className={styles.popularity}>{popularity}</div>               
+            </CardContent>
+        </Card>
     )
 }
