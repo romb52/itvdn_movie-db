@@ -9,7 +9,7 @@ function App() {
         <img src="/cinema-ico.png" className={styles.logo} alt="logo" />
         <ul>
           <li>
-            <Link className={styles.link} to="/">Homeee</Link>
+            <Link className={styles.link} to="/">Home</Link>
           </li>
           <li>
             <Link className={styles.link} to="/about">About</Link>
