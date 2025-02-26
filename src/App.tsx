@@ -38,7 +38,7 @@ function App() {
       <AppBar >
         <Toolbar>
           <LiveTvOutlinedIcon sx={{ mr: 2 }} />
-          <Typography variant='h6' color ="inherit" noWrap>
+          <Typography variant='h6' color="inherit" noWrap>
             The movies db
           </Typography>
           <nav>
